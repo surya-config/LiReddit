@@ -1,0 +1,4 @@
+fragment OnlyUsernameWithId on User {
+  id
+  username
+}

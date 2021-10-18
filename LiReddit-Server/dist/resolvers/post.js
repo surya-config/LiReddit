@@ -22,8 +22,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostResolver = void 0;
-const Post_1 = require("../entities/Post");
 const type_graphql_1 = require("type-graphql");
+const Post_1 = require("../entities/Post");
 let PostResolver = class PostResolver {
     posts({ em }) {
         return em.find(Post_1.Post, {});
@@ -53,8 +53,8 @@ let PostResolver = class PostResolver {
     }
     deletePost(id, { em }) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield em.nativeDelete(Post_1.Post, { id });
-            return true;
+            const isDeleted = yield em.nativeDelete(Post_1.Post, { id });
+            return isDeleted ? true : false;
         });
     }
 };

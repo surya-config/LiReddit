@@ -14,6 +14,7 @@ exports.default = {
     },
     entities: [Post_1.Post, User_1.User],
     dbName: "lireddit",
+    user: "postgres",
     password: "root",
     type: "postgresql",
     debug: !constants_1.__prod__,
