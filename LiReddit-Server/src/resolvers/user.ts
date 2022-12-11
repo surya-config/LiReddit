@@ -57,7 +57,8 @@ export class UserResolver {
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() { req, em }: MyContext
   ): Promise<UserResponse> {
-    if (options.username.length <= 2) {
+    const { username, password } = options;
+    if (username.length <= 2) {
       return {
         errors: [
           {
@@ -68,7 +69,7 @@ export class UserResolver {
       };
     }
 
-    if (options.password.length <= 3) {
+    if (password.length <= 3) {
       return {
         errors: [
           {
@@ -80,7 +81,7 @@ export class UserResolver {
     }
 
     const isAlreadyRegistered = await em.findOne(User, {
-      username: options.username,
+      username,
     });
 
     if (isAlreadyRegistered) {
@@ -94,9 +95,9 @@ export class UserResolver {
       };
     }
 
-    const hashedPassword = await argon2.hash(options.password);
+    const hashedPassword = await argon2.hash(password);
     const user = em.create(User, {
-      username: options.username,
+      username,
       password: hashedPassword,
     });
 
@@ -113,7 +114,7 @@ export class UserResolver {
       };
     }
 
-    // set user id in cookies
+    // set user id in cookies and keep the user logged in
     req.session.userId = user.id;
     return { user };
   }
@@ -132,7 +133,7 @@ export class UserResolver {
         errors: [
           {
             field: "username",
-            message: "that username doesn't exist",
+            message: "there are no users with this username",
           },
         ],
       };

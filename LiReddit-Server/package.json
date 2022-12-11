@@ -47,5 +47,8 @@
       "./src/mikro-orm.config.ts",
       "./dist/mikro-orm.config.js"
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.13"
   }
 }

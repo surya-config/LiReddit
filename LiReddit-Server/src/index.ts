@@ -24,19 +24,19 @@ const main = async () => {
 
   app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-  // Redis Initialization
+  // Session & Redis Initialization
   app.use(
     session({
       name: COOKIE_NAME,
-      store: new RedisStore({ client: redisClient, disableTouch: true }),
+      store: new RedisStore({ client: redisClient, disableTouch: true }), // disableTouch will disable TTL
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
-        httpOnly: true, // Cannot access the cookie on the frontend
+        httpOnly: true, // Cannot access the cookie on the frontend - security reason
         secure: __prod__, // cookie only works in https
         sameSite: "lax", // csrf
       },
       saveUninitialized: false,
-      secret: "mynameissuryaimafullstackdeveloper",
+      secret: process.env.NODE_SESSION_SECRET_KEY ?? "",
       resave: false,
     })
   );
